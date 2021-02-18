@@ -1,4 +1,4 @@
-# Author: Talha Gill
+# Author: Talha Gil
 # Create shape base on user input
 import turtle
 turtle.bgcolor("skyblue")

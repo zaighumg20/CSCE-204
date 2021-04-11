@@ -1,0 +1,58 @@
+import turtle
+import random
+
+turtle.setup(575, 575)
+pen = turtle.Turtle()
+pen.speed(0)
+pen.pensize(2)
+pen.hideturtle()
+
+def getScene():
+    scenecolors = []
+    with open('scene.txt') as file:
+            for line in file:
+                sceneColor = line.replace("\n", "").strip().lower()
+                scenecolors.append(sceneColor)
+            return scenecolors
+
+def drawColorStrip(y, height, color):
+    pen.up()
+    pen.setpos(-turtle.window_width()/2, y)
+    pen.down()
+    pen.fillcolor(color)
+    pen.begin_fill()
+    for i in range(4):
+        if i % 2 ==0:
+            pen.forward(turtle.window_width())
+        else:
+            pen.forward(height)
+        pen.left(90)
+    pen.end_fill()
+
+def saveScene(colorList):
+    with open("scene.txt", "w") as file:
+        for sceneColor in colorList:
+            file.write(sceneColor + "\n")
+    
+def changeColor(x,y):
+    userColor = turtle.textinput("Color", "Enter color").strip()
+    stripHeight = turtle.window_height()/len(colorList)
+    section = int(y // stripHeight)
+    index= - section +(len(colorList) - 1)//2 #magic math
+
+    colorList[index] = userColor
+    saveScene(colorList)
+    drawColorStrip(section * stripHeight, stripHeight, userColor)
+
+colorList = getScene()
+numColors = len(colorList)
+height = turtle.window_height()/numColors
+y = turtle.window_height()/2
+
+for myColor in colorList:
+    y -= height
+    drawColorStrip(y, height, myColor)
+
+turtle.onscreenclick(changeColor) 
+
+turtle.done()
